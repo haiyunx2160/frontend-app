@@ -1,4 +1,5 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
+import axios from 'axios';
 import {
     FETCH_TOKEN,
     TOKEN,
@@ -6,14 +7,11 @@ import {
     SET_USER_ID,
  } from '../actions/types';
 
- function getToken(data) {
-    //TODO: Add logic to get jwt token using username and password
-    return { token: 'fakeToken', userId: 'fakeUserId' };
-}
+
 
 function* setToken(action) {
     try {
-        // const response = yield call(getToken, action);
+        const request =yield call(axios.post,'http://178.128.233.31/frontend/login')
         localStorage.setItem("userId", 'fakeUserId');
         localStorage.setItem("token", 'fakeToken');
         // yield put({ type: SET_USER_ID, response.userId });

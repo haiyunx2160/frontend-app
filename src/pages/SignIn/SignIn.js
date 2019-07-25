@@ -5,13 +5,16 @@ import { fetchToken } from '../../actions/signInActions';
 import { NavLink } from 'react-router-dom';
 
 import './SignIn.scss';
+import {onSignIn} from "../../actions/signInAction";
 
 class SignIn extends Component {
+
+
   render(){
     return (
       <div className="signin-container">
         <div >
-            <form>
+            <form onSubmit={(e)=>{onSignIn(e)}}>
                 <div className="form-group">
                     <input type="text" className="form-control" id="userName" placeholder="Username"></input>
                 </div>
@@ -33,6 +36,7 @@ class SignIn extends Component {
 }
 
 function mapStateToProps(state){
+    console.log(state);
   return {
     UserStore: state.UserStore
   }
