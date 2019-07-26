@@ -11,8 +11,12 @@ import {SIGN_IN} from "../../actions/types";
 
 class SignIn extends Component {
 
-    onSignUpSubmit = (formValues) => {
+    constructor(props) {
+        super(props);
+        this.myRef = React.createRef();
+    }
 
+    onSignUpSubmit = (formValues) => {
         this.props.dispatch({
             type: SIGN_IN,
             payload: {
@@ -20,21 +24,26 @@ class SignIn extends Component {
                 password: formValues.password
             }
         })
+
+        this.props.reset()
     };
-renderError=({error, touched})=>{
-if(touched && error){
-    return (
-        <small style={{color:'red'}}>{error}</small>
-    )
-}
-};
+
+    renderError = ({error, touched}) => {
+        if(this.myRef.current!==null){
+            this.myRef.current.hidden=true;
+        }
+        if (touched && error) {
+            return (
+                <small className='alert alert-danger'>{error}</small>
+            )
+        }
+    };
 
     renderInput = (formProps) => {
         console.log(formProps.meta)
         return (
 
             <div className='form-group'>
-                <label htmlFor="">{formProps.label}</label>
                 <input  {...formProps.input}
                         className='form-control'
                         autoComplete='off'
@@ -43,6 +52,7 @@ if(touched && error){
             </div>
         )
     };
+
 
     render() {
 
@@ -53,17 +63,16 @@ if(touched && error){
                     <form onSubmit={this.props.handleSubmit(this.onSignUpSubmit)}>
                         <Field name='username'
                                type='text'
-                               label='UserName'
+                               placeholder='Username'
                                component={this.renderInput}/>
 
                         <Field name='password'
-                               label='Password'
                                type='password'
                                component={this.renderInput}/>
 
-                        <small style={{display: this.props.error ? 'inline' : 'none', color: 'red'}}>Wrong user name or
-                            password, please try again
-                        </small>
+                        <div ref={this.myRef} hidden={!this.props.error}>
+                            Wrong user name or password, please try again
+                        </div>
                         <div>
                             <button type="submit" name="signIn" className="btn btn-info signin-btn">Login</button>
                         </div>
@@ -78,13 +87,13 @@ if(touched && error){
     }
 }
 
-const validate = (formValues)=>{
-    const errs ={};
-    if (!formValues.username){
-        errs.username='Username can not be empty'
+const validate = (formValues) => {
+    const errs = {};
+    if (!formValues.username) {
+        errs.username = 'Username can not be empty'
     }
-    if (!formValues.password){
-        errs.password='Password can not be empty'
+    if (!formValues.password) {
+        errs.password = 'Password can not be empty'
     }
 
     return errs;
