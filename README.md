@@ -61,5 +61,5 @@ Here is <u>*the client side*</u>, which is built by MERN stack, and ***built wit
   
   ### Demo
   
-  ![MainPage](https://github.com/haiyunx2160/myfiles/blob/master/Demo%20gif/front-end-demo.gif?raw=true)
+  ![MainPage](https://github.com/haiyunx2160/myfiles/blob/master/front-end-demo.gif?raw=true)
 
