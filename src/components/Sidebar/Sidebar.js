@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import './Sidebar.scss';
 import Sidebar, {SidebarStyles} from 'react-sidebar';
+import {connect} from "react-redux";
+import {LOGOUT} from "../../actions/types";
+
 
 class LeftSidebar extends Component {
+
+    onLogOut=()=>{
+        this.props.dispatch({type:LOGOUT});
+    };
 
   render(){
     return (
@@ -55,7 +62,7 @@ class LeftSidebar extends Component {
                     <i className="fa fa-envelope-square"></i>
                     <span>Contact</span>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" onClick={()=>this.onLogOut()}>
                     <i className="fa fa-sign-out"></i>
                     <span>Logout</span>
                 </li>
@@ -148,5 +155,10 @@ class LeftSidebar extends Component {
 //         </Sidebar>
 //     }
 // }
+const mapDispatchToProps =(dispatch)=>{
+    return {dispatch}
+}
 
-export default LeftSidebar;
+
+
+export default connect(null, mapDispatchToProps)(LeftSidebar);

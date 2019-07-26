@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom';
 import './Dashboard.scss';
+import {connect} from "react-redux";
 
 import { LeftSidebar, TransferModal, DoughnutChart, LineChart, ChartTable, TransactionTable, Footer } from './../../components';
 
+
 class Dashboard extends Component{
 
+    componentWillUnmount() {
+        alert('Successfully logged out!')
+    }
+
     render(){
+
+        if (!this.props.authenticated) return <Redirect to={'/signin'} />
          return (
             <div className="dashboard-container">
                 <div className="navigation">
@@ -29,4 +38,10 @@ class Dashboard extends Component{
 
 }
 
-export default Dashboard;
+const mapStateToProps= (state)=>{
+    return {
+        authenticated:state.UserStore.authenticated
+    }
+};
+
+export default connect(mapStateToProps)(Dashboard);

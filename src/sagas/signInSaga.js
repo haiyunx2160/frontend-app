@@ -1,28 +1,33 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import {put, takeLatest, call} from 'redux-saga/effects';
 import axios from 'axios';
 import {
-    FETCH_TOKEN,
-    TOKEN,
-    TOKEN_FAILED,
-    SET_USER_ID,
- } from '../actions/types';
+    SIGN_IN,
+    SIGN_IN_SUCCESSFUL,
+    SIGN_IN_FAILED
+} from '../actions/types';
 
-
+const postData = (payload) => {
+    return axios.post('http://178.128.233.31/frontend/login', payload);
+};
 
 function* setToken(action) {
+
     try {
-        const request =yield call(axios.post,'http://178.128.233.31/frontend/login')
-        localStorage.setItem("userId", 'fakeUserId');
-        localStorage.setItem("token", 'fakeToken');
-        // yield put({ type: SET_USER_ID, response.userId });
-        // yield put({ type: TOKEN, response.token });
+        const response = yield call(postData, action.payload);
+        console.log(response)
+        localStorage.setItem("userId", response.data.ref_code);
+        if (response) {
+            yield put({type: SIGN_IN_SUCCESSFUL, payload: response.data});
+        }
+    } catch (err) {
+
+        if (err) {
+            yield put({type: SIGN_IN_FAILED, payload: err});
+        }
     }
-    catch(error) {
-        console.error(error)
-        yield put({ type: TOKEN_FAILED, error });
-    }
+
 }
 
 export function* getTokenSaga() {
-    yield takeLatest(FETCH_TOKEN, setToken)
+    yield takeLatest(SIGN_IN, setToken)
 }

@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import './Footer.scss';
+import {connect} from "react-redux";
+import {LOGOUT} from "../../actions/types";
 
 class Footer extends Component {
+
+    onLogOut=()=>{
+        this.props.dispatch({type:LOGOUT});
+    };
+
     render(){
         return (
                 <div className="footer-control">
@@ -11,7 +18,7 @@ class Footer extends Component {
                         <div>Stats</div>
                         <div>Exchange</div>
                         <div>Contact</div>
-                        <div>Logout</div>
+                        <div onClick={()=>this.onLogOut()}>Logout</div>
                         <div>Referral Code</div>
                     </div>
                 </div>
@@ -19,4 +26,8 @@ class Footer extends Component {
         );
     }
 }
-export default Footer;
+
+const mapDispatchToProps =(dispatch)=>{
+    return {dispatch}
+}
+export default connect(null,mapDispatchToProps)(Footer);
