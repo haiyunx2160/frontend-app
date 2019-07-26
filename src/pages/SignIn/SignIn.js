@@ -13,11 +13,11 @@ class SignIn extends Component {
 
     constructor() {
         super();
-        this.state = {done:false};
+        this.state = {done: false};
     }
 
     onSignUpSubmit = (formValues) => {
-        this.setState({done:true})
+        this.setState({done: true});
         this.props.dispatch({
             type: SIGN_IN,
             payload: {
@@ -27,12 +27,12 @@ class SignIn extends Component {
         });
     };
 
-    formOnChange =()=>{
-        this.setState({done:false})
+    formOnChange = () => {
+        this.setState({done: false})
     };
 
     renderError = ({error, touched}) => {
-        this.state = {done:false};
+        this.state = {done: false};
         if (touched && error) {
             return (
                 <small className='alert alert-danger'>{error}</small>
@@ -69,7 +69,6 @@ class SignIn extends Component {
                         <Field name='password'
                                type='password'
                                component={this.renderInput}/>
-
                         <div>
 
                         </div>
@@ -77,9 +76,10 @@ class SignIn extends Component {
                             <button type="submit" name="signIn" className="btn btn-info signin-btn">Login</button>
                         </div>
                     </form>
-                    {this.state.done? (
+                    {this.state.done ? (
                         <div>
-                            <small style={{color:'red'}}>{this.props.error?"Wrong user name or password, please try again":null}</small>
+                            <small
+                                style={{color: 'red'}}>{this.props.error ? "Wrong user name or password, please try again" : null}</small>
                         </div>
                     ) : null}
                 </div>
