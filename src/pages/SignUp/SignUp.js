@@ -12,7 +12,8 @@ const initialState = {
     usernameError: '',
     passwordError: '',
     emailError: '',
-    referralCodeError: ''
+    referralCodeError: '',
+    done:false
 };
 
 class SignUp extends Component {
@@ -20,6 +21,7 @@ class SignUp extends Component {
     state = initialState;
 
     onSignUpSubmit = (e) => {
+        this.setState({done:true})
         e.preventDefault();
         e.persist();
 
@@ -43,7 +45,7 @@ class SignUp extends Component {
         let name = e.target.name;
         let value = e.target.value;
 
-        this.setState({[name]: value})
+        this.setState({[name]: value, done:false})
 
 
     };
@@ -66,8 +68,8 @@ class SignUp extends Component {
             return false;
         }
 
-        if(this.state.email===''){
-            emailError = 'Email is empty';
+        if(!this.state.email.includes('@')){
+            emailError = 'Email is not valid';
             this.setState({emailError:emailError});
             return false;
         }
@@ -129,14 +131,15 @@ class SignUp extends Component {
                                required/>
                     </div>
                     <div>{this.state.referralCodeError}</div>
-                    <small id='error' style={{display: this.props.error ? 'inline' : 'none', color: 'red'}}>Failed to
-                        sign up,
-                        please try again
-                    </small>
                     <div>
                         <button type="submit" name="signIn" className=" btn btn-info signup-btn">Sign Up</button>
                     </div>
                 </form>
+                {this.state.done? (
+                    <div>
+                        <small style={{color:'red'}}>{this.props.error?"Failed to sign up,please try again":null}</small>
+                    </div>
+                ) : null}
             </div>
             <div className="signup-options-container">
                 <NavLink to="/signIn" className="signup-link">Sign In</NavLink>

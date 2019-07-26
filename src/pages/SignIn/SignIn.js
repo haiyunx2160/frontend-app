@@ -11,27 +11,28 @@ import {SIGN_IN} from "../../actions/types";
 
 class SignIn extends Component {
 
-    constructor(props) {
-        super(props);
-        this.myRef = React.createRef();
+    constructor() {
+        super();
+        this.state = {done:false};
     }
 
     onSignUpSubmit = (formValues) => {
+        this.setState({done:true})
         this.props.dispatch({
             type: SIGN_IN,
             payload: {
                 username: formValues.username,
                 password: formValues.password
             }
-        })
+        });
+    };
 
-        this.props.reset()
+    formOnChange =()=>{
+        this.setState({done:false})
     };
 
     renderError = ({error, touched}) => {
-        if(this.myRef.current!==null){
-            this.myRef.current.hidden=true;
-        }
+        this.state = {done:false};
         if (touched && error) {
             return (
                 <small className='alert alert-danger'>{error}</small>
@@ -40,7 +41,6 @@ class SignIn extends Component {
     };
 
     renderInput = (formProps) => {
-        console.log(formProps.meta)
         return (
 
             <div className='form-group'>
@@ -60,7 +60,7 @@ class SignIn extends Component {
         return (
             <div className="signin-container">
                 <div>
-                    <form onSubmit={this.props.handleSubmit(this.onSignUpSubmit)}>
+                    <form onSubmit={this.props.handleSubmit(this.onSignUpSubmit)} onChange={this.formOnChange}>
                         <Field name='username'
                                type='text'
                                placeholder='Username'
@@ -70,13 +70,18 @@ class SignIn extends Component {
                                type='password'
                                component={this.renderInput}/>
 
-                        <div ref={this.myRef} hidden={!this.props.error}>
-                            Wrong user name or password, please try again
+                        <div>
+
                         </div>
                         <div>
                             <button type="submit" name="signIn" className="btn btn-info signin-btn">Login</button>
                         </div>
                     </form>
+                    {this.state.done? (
+                        <div>
+                            <small style={{color:'red'}}>{this.props.error?"Wrong user name or password, please try again":null}</small>
+                        </div>
+                    ) : null}
                 </div>
                 <div className="signup-options-container">
                     <NavLink to="/signup" className="signup-link">Sign Up</NavLink>
@@ -100,7 +105,6 @@ const validate = (formValues) => {
 };
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         authenticated: state.UserStore.authenticated,
         error: state.UserStore.error
